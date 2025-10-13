@@ -9,6 +9,7 @@ export default function Register() {
     password: "",
     role: "TENANT",
   });
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
