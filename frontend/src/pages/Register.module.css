@@ -1,0 +1,75 @@
+/* Register.module.css */
+.container {
+  min-height: 100vh;               /* full viewport height */
+  width: 100vw;                     /* full viewport width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #4f46e5, #6366f1); 
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;                 /* limits width on large screens */
+  box-sizing: border-box;
+}
+
+input, select, button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+button {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  form {
+    padding: 20px;
+  }
+
+  input, select, button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
