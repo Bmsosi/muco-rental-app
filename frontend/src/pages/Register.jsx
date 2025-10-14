@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; //redirecting after register
 import styles from "./Register.module.css"; // make sure this file exists
 
 export default function Register() {
@@ -10,6 +11,8 @@ export default function Register() {
     role: "TENANT",
   });
   const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate(); // <-Initializing the nagigate function
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,15 +28,23 @@ export default function Register() {
       });
       const data = await res.json();
       console.log("Registered user:", data);
-       setSuccess("Registration successful! Please login.");
+      if (res.ok) {
+        setSuccess("Registration successful! Redirecting to login...");
+        setTimeout(() => navigate("/login"), 2000); // redirects after 2 seconds
+      } else {
+        alert(data.error || "Registration failed");
+      }
     } catch (err) {
       console.error("Error registering user:", err);
     }
   };
 
+
   return (
     <div className={styles.container}>
       <h2>Sign Up</h2>
+      {/* Show success message here */}
+      {success && <p className={styles.success}>{success}</p>}
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"

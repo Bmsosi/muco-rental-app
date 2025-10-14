@@ -58,6 +58,13 @@ button:hover {
   transform: translateY(-2px);
 }
 
+.success {
+  color: green;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
   form {
