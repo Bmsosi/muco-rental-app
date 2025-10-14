@@ -8,15 +8,23 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 export const register = async (req, res) => {
   const { email, password, firstName, lastName, role } = req.body;
   try {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: { email, password: hashedPassword, firstName, lastName, role },
     });
+
     res.json({ message: "User registered", userId: user.id });
   } catch (err) {
+    console.error(err);
     res.status(400).json({ error: err.message });
   }
 };
+
 
 // Login user
 export const login = async (req, res) => {
