@@ -34,9 +34,9 @@ export default function Login() {
 
         // Navigate based on role
         if (data.role === "TENANT") {
-          navigate("/tenant-dashboard");
+          navigate("/tenant/dashboard");
         } else if (data.role === "LANDLORD") {
-          navigate("/landlord-dashboard");
+          navigate("/landlord/dashboard");
         }
       } else {
         alert(data.error || "Login failed");
