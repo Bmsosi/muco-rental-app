@@ -9,6 +9,7 @@ export default function CreateListing() {
     price: "",
     location: "",
   });
+  const [images, setImages] = useState([]);
   const navigate = useNavigate();
   const landlordId = localStorage.getItem("userId");
 
@@ -16,21 +17,31 @@ export default function CreateListing() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setImages([...e.target.files]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const data = new FormData();
+      Object.entries(formData).forEach(([key, value]) =>
+        data.append(key, value)
+      );
+      data.append("landlordId", landlordId);
+      images.forEach((file) => data.append("images", file));
+
       const res = await fetch("http://localhost:5000/api/properties", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, landlordId }),
+        body: data, // FormData, no JSON here
       });
-      const data = await res.json();
 
+      const result = await res.json();
       if (res.ok) {
         alert("Listing created successfully!");
         navigate("/landlord/dashboard");
       } else {
-        alert(data.error || "Error creating listing");
+        alert(result.error || "Error creating listing");
       }
     } catch (err) {
       console.error(err);
@@ -61,6 +72,13 @@ export default function CreateListing() {
           required
         />
         <input
+          name="type"
+          placeholder="Property Type (apartment, condo, room...)"
+          value={formData.type}
+          onChange={handleChange}
+          required
+        />
+        <input
           name="price"
           placeholder="Monthly Rent (e.g., 1500)"
           value={formData.price}
@@ -73,6 +91,12 @@ export default function CreateListing() {
           value={formData.location}
           onChange={handleChange}
           required
+        />
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFileChange}
         />
         <button
           type="submit"
