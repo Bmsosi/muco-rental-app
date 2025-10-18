@@ -57,6 +57,25 @@
   background: #0056b3;
 }
 
+/* Style for the Available Only checkbox label */
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  color: #007bff; /* Make the text blue */
+  cursor: pointer;
+}
+
+/* Style the checkbox itself */
+.filters input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #007bff; /* Modern way to color checkboxes in supported browsers */
+  cursor: pointer;
+}
+
+
 /* Grid */
 .dashboard-content {
   margin-top: 2rem;
