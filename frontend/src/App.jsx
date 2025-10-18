@@ -8,6 +8,7 @@ import Properties from "./pages/Properties";
 import PropertyDetail from "./pages/PropertyDetail";
 import LandlordDashboard from "./pages/LandlordDashboard";
 import TenantDashboard from "./pages/TenantDashboard";
+import CreateListing from "./pages/CreateListing";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/properties/:id" element={<PropertyDetail />} />
         <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
         <Route path="/tenant/dashboard" element={<TenantDashboard />} />
+        <Route path="/landlord/create-listing" element={<CreateListing />} />
       </Routes>
     </Router>
   );

@@ -3,6 +3,8 @@ import prisma from "../utils/prisma.js";
 // Create a property
 export const createProperty = async (req, res) => {
   const { title, description, type, price, location, landlordId } = req.body;
+  console.log("Incoming property data:", req.body);
+
   try {
     const property = await prisma.property.create({
       data: {

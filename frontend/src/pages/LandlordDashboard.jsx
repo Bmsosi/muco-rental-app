@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // <-- add this import
 import "./Dashboard.css";
 
 export default function LandlordDashboard() {
@@ -21,6 +22,23 @@ export default function LandlordDashboard() {
       <header className="dashboard-header">
         <h1>🏠 Landlord Dashboard</h1>
         <p>Welcome back! Manage your listings and track your properties.</p>
+
+        {/* Add New Listing button */}
+        <Link to="/landlord/create-listing">
+          <button
+            style={{
+              marginTop: "1rem",
+              background: "#007bff",
+              color: "white",
+              padding: "0.5rem 1rem",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            + Add New Listing
+          </button>
+        </Link>
       </header>
 
       <section className="dashboard-content">

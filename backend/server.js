@@ -7,7 +7,6 @@ import propertyRoutes from "./routes/properties.js";
 import messageRoutes from "./routes/messages.js";
 import dashboardRoutes from "./routes/dashboard.js";
 
-
 dotenv.config();
 const app = express();
 
