@@ -39,7 +39,16 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.json({ token, role: user.role });
+    res.json({
+      token,
+      role: user.role,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    });//This will call the user and direct them to their dashboard
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

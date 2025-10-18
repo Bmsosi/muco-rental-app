@@ -18,12 +18,12 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => null); // avoid crash if non-JSON;
       console.log("Logged in user:", data);
 
       if (res.ok) {
@@ -40,7 +40,6 @@ export default function Login() {
       } else {
         alert(data.error || "Login failed");
       }
-
     } catch (err) {
       console.error("Error logging in:", err);
     }

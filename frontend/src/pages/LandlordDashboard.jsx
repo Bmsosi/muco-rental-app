@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 export default function LandlordDashboard() {
   const [properties, setProperties] = useState([]);
-  const userId = 1; // for now, hardcode. Later, get from logged-in user.
+  const userId = localStorage.getItem("userId");
+ // This will get info from the logged-in user.
 
   useEffect(() => {
     const fetchData = async () => {
