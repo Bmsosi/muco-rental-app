@@ -10,6 +10,9 @@ import LandlordDashboard from "./pages/LandlordDashboard";
 import TenantDashboard from "./pages/TenantDashboard";
 
 function App() {
+
+  const userRole = localStorage.getItem("role"); //protecting routes based on role 'landlord or tenant'
+
   return (
     <Router>
       <Routes>
