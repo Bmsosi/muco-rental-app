@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 
 export default function Login() {
@@ -6,6 +7,9 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +25,22 @@ export default function Login() {
       });
       const data = await res.json();
       console.log("Logged in user:", data);
+
+      if (res.ok) {
+        // Save token and role in localStorage (or context)
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role); // Make sure your backend returns role
+
+        // Navigate based on role
+        if (data.role === "TENANT") {
+          navigate("/tenant-dashboard");
+        } else if (data.role === "LANDLORD") {
+          navigate("/landlord-dashboard");
+        }
+      } else {
+        alert(data.error || "Login failed");
+      }
+
     } catch (err) {
       console.error("Error logging in:", err);
     }
