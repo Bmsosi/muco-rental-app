@@ -114,6 +114,22 @@
   color: #555;
 }
 
+/*The tenants contancting landlord buttons*/
+.contact-btn {
+  padding: 0.6rem 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.contact-btn:hover {
+  background-color: #218838;
+}
+
+
 .card-actions {
   display: flex;
   gap: 0.5rem;
