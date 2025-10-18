@@ -30,6 +30,7 @@ export default function Login() {
         // Save token and role in localStorage (or context)
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role); // Make sure your backend returns role
+        localStorage.setItem("userId", data.user.id); // Save user ID
 
         // Navigate based on role
         if (data.role === "TENANT") {
