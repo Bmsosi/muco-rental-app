@@ -1,8 +1,9 @@
+/* Container & Header */
 .dashboard-container {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  font-family: "Arial", sans-serif;
   color: #333;
 }
 
@@ -16,7 +17,9 @@
   color: #555;
 }
 
-.add-listing-btn {
+/* Add Listing Button */
+.add-listing-btn,
+.dashboard-header .add-listing-btn {
   margin-top: 1rem;
   background: #007bff;
   color: white;
@@ -30,6 +33,31 @@
   background: #0056b3;
 }
 
+/* Filters */
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+.filters input,
+.filters label,
+.filters button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.filters button {
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.filters button:hover {
+  background: #0056b3;
+}
+
+/* Grid */
 .dashboard-content {
   margin-top: 2rem;
 }
@@ -45,6 +73,7 @@
   gap: 1.5rem;
 }
 
+/* Cards */
 .property-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -61,11 +90,11 @@
 .property-image-section {
   position: relative;
 }
-
 .property-main-image {
   width: 100%;
   height: 250px;
   object-fit: cover;
+  border-radius: 8px 8px 0 0;
 }
 
 .property-thumbnails {
@@ -75,61 +104,43 @@
   padding: 0.5rem;
   background: #f7f7f7;
 }
-
 .property-thumbnail {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 4px;
   cursor: pointer;
-  transition: transform 0.2s;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border 0.2s;
 }
 .property-thumbnail:hover {
   transform: scale(1.1);
+  border-color: #007bff;
 }
 
 /* Details */
 .property-details {
   padding: 1rem;
 }
-
 .property-details h3 {
   margin: 0;
   font-size: 1.3rem;
 }
-
 .property-details .location {
   color: #777;
   margin: 0.3rem 0;
 }
-
 .property-details .price {
   font-weight: bold;
   margin: 0.3rem 0;
 }
-
 .property-details .description {
   font-size: 0.95rem;
   margin: 0.5rem 0;
   color: #555;
 }
 
-/*The tenants contancting landlord buttons*/
-.contact-btn {
-  padding: 0.6rem 1rem;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.2s;
-}
-.contact-btn:hover {
-  background-color: #218838;
-}
-
-
+/* Card Actions */
 .card-actions {
   display: flex;
   gap: 0.5rem;
@@ -160,8 +171,66 @@
 .delete-btn:hover {
   background: #b02a37;
 }
+
+/* Contact Button */
+.contact-btn {
+  padding: 0.6rem 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+.contact-btn:hover {
+  background-color: #218838;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+.modal-content button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   .property-main-image {
     height: 200px;
+  }
+  .property-thumbnail {
+    width: 50px;
+    height: 50px;
+  }
+  .filters {
+    flex-direction: column;
   }
 }
