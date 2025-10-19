@@ -253,3 +253,23 @@
     flex-direction: column;
   }
 }
+
+/* Availability styles */
+.availability {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.available-now {
+  color: #28a745; /* Green */
+}
+
+.available-soon {
+  color: #007bff; /* Blue */
+}
+
+.rented-out {
+  color: #dc3545; /* Red */
+}
+
