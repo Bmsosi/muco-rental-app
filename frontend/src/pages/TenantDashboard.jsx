@@ -161,16 +161,15 @@ export default function TenantDashboard() {
                   <p className="location">{p.location}</p>
                   <p className="price">${p.price}</p>
                   <p className="description">{p.description}</p>
-                  <p>
-                    Available: className=
-                    {`availability ${
+                  <p
+                    className={`availability ${
                       p.available
                         ? "available-now"
                         : p.availableFrom
                         ? "available-soon"
                         : "rented-out"
                     }`}
-                    
+                  >
                     {p.available
                       ? "✅ Available Now"
                       : p.availableFrom
@@ -179,6 +178,7 @@ export default function TenantDashboard() {
                         ).toLocaleDateString()}`
                       : "❌ Rented Out"}
                   </p>
+
                   <button
                     className="contact-btn"
                     onClick={() => setSelectedProperty(p)}
