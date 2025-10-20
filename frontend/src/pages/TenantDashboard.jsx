@@ -85,112 +85,126 @@ export default function TenantDashboard() {
     }
   };
 
-  return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1>🏘️ Tenant Dashboard</h1>
-        <p>Browse available properties and contact landlords.</p>
-      </header>
+  const getAvailabilityLabel = (p) => {
+    if (p.available)
+      return { text: "✅ Available Now", class: "available-now" };
+    if (p.availableFrom) {
+      const date = new Date(p.availableFrom).toLocaleDateString();
+      return { text: `📅 Available from ${date}`, class: "available-soon" };
+    }
+    return { text: "❌ Rented Out", class: "rented-out" };
+  };
 
-      {/* Filters */}
-      <section className="filters">
-        <input
-          type="number"
-          name="minPrice"
-          placeholder="Min Price"
-          value={filters.minPrice}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="number"
-          name="maxPrice"
-          placeholder="Max Price"
-          value={filters.maxPrice}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={filters.location}
-          onChange={handleFilterChange}
-        />
-        <label>
+  return (
+    <div className="tenant-dashboard-wrapper">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="logo">🏘️ MucoRent</div>
+        <nav className="sidebar-menu">
+          <ul>
+            <li className="active">Dashboard</li>
+            <li>My Messages</li>
+            <li>Favorites</li>
+            <li>Account Settings</li>
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <div className="tenant-main">
+        <header className="dashboard-header">
+          <h1>🏘️ Tenant Dashboard</h1>
+          <p>Browse all properties and contact landlords.</p>
+        </header>
+
+        {/* Filters */}
+        <section className="filters">
           <input
-            type="checkbox"
-            name="availableOnly"
-            checked={filters.availableOnly}
+            type="number"
+            name="minPrice"
+            placeholder="Min Price"
+            value={filters.minPrice}
             onChange={handleFilterChange}
           />
-          Available Only
-        </label>
-        <button onClick={applyFilters}>Apply Filters</button>
-      </section>
+          <input
+            type="number"
+            name="maxPrice"
+            placeholder="Max Price"
+            value={filters.maxPrice}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            value={filters.location}
+            onChange={handleFilterChange}
+          />
+          <label>
+            <input
+              type="checkbox"
+              name="availableOnly"
+              checked={filters.availableOnly}
+              onChange={handleFilterChange}
+            />
+            Available Only
+          </label>
+          <button onClick={applyFilters}>Apply Filters</button>
+        </section>
 
-      {/* Properties Grid */}
-      <section className="dashboard-content">
-        {filteredProperties.length === 0 ? (
-          <p className="empty-state">No properties match your filters.</p>
-        ) : (
-          <div className="property-grid">
-            {filteredProperties.map((p) => (
-              <div className="property-card" key={p.id}>
-                <div className="property-image-section">
-                  <img
-                    src={mainImages[p.id]}
-                    alt={p.title}
-                    className="property-main-image"
-                  />
-                  {p.images && p.images.length > 1 && (
-                    <div className="property-thumbnails">
-                      {p.images.map((img, idx) => (
-                        <img
-                          key={idx}
-                          src={`http://localhost:5000${img}`}
-                          alt={`${p.title} - ${idx + 1}`}
-                          className="property-thumbnail"
-                          onClick={() => handleThumbnailClick(p.id, img)}
-                        />
-                      ))}
+        {/* Properties Grid */}
+        <section className="dashboard-content">
+          {filteredProperties.length === 0 ? (
+            <p className="empty-state">No properties match your filters.</p>
+          ) : (
+            <div className="property-grid">
+              {filteredProperties.map((p) => {
+                const availability = getAvailabilityLabel(p);
+                return (
+                  <div className="property-card" key={p.id}>
+                    <div className="property-image-section">
+                      <img
+                        src={mainImages[p.id]}
+                        alt={p.title}
+                        className="property-main-image"
+                      />
+                      {p.images && p.images.length > 1 && (
+                        <div className="property-thumbnails">
+                          {p.images.map((img, idx) => (
+                            <img
+                              key={idx}
+                              src={`http://localhost:5000${img}`}
+                              alt={`${p.title} - ${idx + 1}`}
+                              className="property-thumbnail"
+                              onClick={() => handleThumbnailClick(p.id, img)}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
 
-                <div className="property-details">
-                  <h3>{p.title}</h3>
-                  <p className="location">{p.location}</p>
-                  <p className="price">${p.price}</p>
-                  <p className="description">{p.description}</p>
-                  <p
-                    className={`availability ${
-                      p.available
-                        ? "available-now"
-                        : p.availableFrom
-                        ? "available-soon"
-                        : "rented-out"
-                    }`}
-                  >
-                    {p.available
-                      ? "✅ Available Now"
-                      : p.availableFrom
-                      ? `📅 Available from ${new Date(
-                          p.availableFrom
-                        ).toLocaleDateString()}`
-                      : "❌ Rented Out"}
-                  </p>
-
-                  <button
-                    className="contact-btn"
-                    onClick={() => setSelectedProperty(p)}
-                  >
-                    Contact Landlord
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+                    <div className="property-details">
+                      <h3>{p.title}</h3>
+                      <p className="location">{p.location}</p>
+                      <p className="price">${p.price}</p>
+                      <p className="description">{p.description}</p>
+                      <p className={`availability ${availability.class}`}>
+                        {availability.text}
+                      </p>
+                      <button
+                        className="contact-btn"
+                        onClick={() => setSelectedProperty(p)}
+                      >
+                        Contact Landlord
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      </div>
 
       {/* Modal for Contact */}
       {selectedProperty && (

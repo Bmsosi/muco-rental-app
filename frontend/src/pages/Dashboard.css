@@ -273,3 +273,24 @@
   color: #dc3545; /* Red */
 }
 
+.availability {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.available-now {
+  color: #28a745; /* green */
+}
+
+.available-soon {
+  color: #ff9800; /* orange */
+}
+
+.rented-out {
+  color: #dc3545; /* red */
+}
+/* Scrollbar for thumbnails */
+.property-thumbnails::-webkit-scrollbar {
+  height: 8px;
+}
+
