@@ -18,7 +18,7 @@ export const getLandlordDashboard = async (req, res) => {
 export const getTenantDashboard = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
-      where: { available: true },
+      /*where: { available: true },*/ // Uncomment to show only available properties
       include: { landlord: true },
     });
     res.json({ properties });
