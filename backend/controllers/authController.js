@@ -25,7 +25,6 @@ export const register = async (req, res) => {
   }
 };
 
-
 // Login user
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -39,16 +38,19 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    // Include onboarded field
     res.json({
       token,
       role: user.role,
+      onboarded: user.onboarded, // <-- added
       user: {
         id: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
       },
-    });//This will call the user and direct them to their dashboard
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

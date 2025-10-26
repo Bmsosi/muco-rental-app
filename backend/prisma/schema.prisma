@@ -23,6 +23,15 @@ model User {
   role      UserRole
   properties Property[]
   messages  Message[]
+
+  onboarded  Boolean   @default(false)
+
+bankName       String?
+accountNumber  String?
+routingNumber  String?
+phone          String?
+address        String?
+
 }
 
 model Property {

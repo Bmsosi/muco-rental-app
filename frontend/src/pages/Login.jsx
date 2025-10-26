@@ -16,35 +16,41 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json().catch(() => null); // avoid crash if non-JSON;
-      console.log("Logged in user:", data);
+  e.preventDefault();
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
 
-      if (res.ok) {
-        // Save token and role in localStorage (or context)
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("role", data.role); // Make sure your backend returns role
-        localStorage.setItem("userId", data.user.id); // Save user ID
+    const data = await res.json().catch(() => null); // avoid crash if non-JSON
+    console.log("Logged in user:", data);
 
-        // Navigate based on role
-        if (data.role === "TENANT") {
-          navigate("/tenant/dashboard");
-        } else if (data.role === "LANDLORD") {
+    if (res.ok) {
+      // Save token and user info
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("userId", data.user.id);
+
+      // Redirect based on role and onboarding status
+      if (data.role === "LANDLORD") {
+        if (!data.onboarded) {
+          navigate("/landlord/onboarding");
+        } else {
           navigate("/landlord/dashboard");
         }
       } else {
-        alert(data.error || "Login failed");
+        navigate("/tenant/dashboard");
       }
-    } catch (err) {
-      console.error("Error logging in:", err);
+    } else {
+      alert(data.error || "Login failed");
     }
-  };
+  } catch (err) {
+    console.error("Error logging in:", err);
+  }
+};
+
 
   return (
     <div className={styles.container}>

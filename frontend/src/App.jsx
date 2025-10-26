@@ -9,6 +9,7 @@ import PropertyDetail from "./pages/PropertyDetail";
 import LandlordDashboard from "./pages/LandlordDashboard";
 import TenantDashboard from "./pages/TenantDashboard";
 import CreateListing from "./pages/CreateListing";
+import LandlordOnBoarding from "./pages/LandlordOnBoarding";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/landlord/dashboard" element={<LandlordDashboard />} />
         <Route path="/tenant/dashboard" element={<TenantDashboard />} />
         <Route path="/landlord/create-listing" element={<CreateListing />} />
+        <Route path="/landlord/onboarding" element={<LandlordOnBoarding />} />
       </Routes>
     </Router>
   );
