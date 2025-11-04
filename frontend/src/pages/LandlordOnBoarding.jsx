@@ -5,9 +5,15 @@ import "./onboarding.css";
 export default function LandlordOnboarding() {
   const [formData, setFormData] = useState({
     bankName: "",
+    accountName: "",
+    internationalNumber: "",
     accountNumber: "",
     routingNumber: "",
+    swiftBic: "",
     phoneNumber: "",
+    email: "",
+    firstName: "",
+    lastName: "",
     address: "",
   });
 
@@ -76,6 +82,10 @@ export default function LandlordOnboarding() {
           >
             Contact Info
           </li>
+          <li
+            >
+                <a href="#LandlordDashboard.jsx">Go to Dashboard</a>
+          </li>
         </ul>
       </div>
 
@@ -85,6 +95,20 @@ export default function LandlordOnboarding() {
         <form onSubmit={handleSubmit}>
           {activeMenu === "general" && (
             <>
+              <input
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName || ""}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName || ""}
+                onChange={handleChange}
+                required
+              />
               <input
                 name="phoneNumber"
                 placeholder="Phone Number"
@@ -112,9 +136,30 @@ export default function LandlordOnboarding() {
                 required
               />
               <input
+                name="accountName"
+                placeholder="Account name"
+                value={formData.accountName}
+                onChange={handleChange}
+                required
+              />
+              <input
                 name="accountNumber"
                 placeholder="Account Number"
                 value={formData.accountNumber}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="internationalNumber"
+                placeholder="International bank account number (IBAN)"
+                value={formData.internationalNumber}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="swiftBic"
+                placeholder="SWIFT, BIC or Routing Number"
+                value={formData.swiftBic}
                 onChange={handleChange}
                 required
               />
@@ -134,6 +179,13 @@ export default function LandlordOnboarding() {
                 name="email"
                 placeholder="Email"
                 value={formData.email || ""}
+                onChange={handleChange}
+                required
+              />
+              <input
+                name="mobilePhone"
+                placeholder="Mobile Phone"
+                value={formData.mobilePhone || ""}
                 onChange={handleChange}
                 required
               />

@@ -5,11 +5,16 @@
   background-color: #f5f5f5;
 }
 
-.sidebar {
+.sidebar  {
   width: 220px;
-  background-color: #007bff;
+  background-color: #0c2b20;
   color: white;
   padding: 2rem 1rem;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
 }
 
 .sidebar h2 {
@@ -21,6 +26,7 @@
   list-style: none;
   padding: 0;
   margin-top: 2rem;
+  
 }
 
 .sidebar li {
