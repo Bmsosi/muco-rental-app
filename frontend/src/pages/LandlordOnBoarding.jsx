@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./onboarding.css";
 
@@ -14,20 +14,94 @@ export default function LandlordOnboarding() {
     email: "",
     firstName: "",
     lastName: "",
-    address: "",
+    // removed address string here; address now separate
   });
 
-  const [activeMenu, setActiveMenu] = useState("general"); // sidebar menu state
+  const [address, setAddress] = useState({
+    street: "",
+    number: "",
+    country: "",
+    state: "",
+    city: "",
+    postalCode: "",
+  });
+
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [activeMenu, setActiveMenu] = useState("general");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    // fetch list of countries (names)
+    // using countriesnow.space endpoints — if any endpoint shape differs, adapt map
+    fetch("https://countriesnow.space/api/v0.1/countries/iso")
+      .then((r) => r.json())
+      .then((res) => {
+        const list = (res?.data || []).map((c) => c.name || c.country);
+        setCountries(list.sort());
+      })
+      .catch((err) => console.error("Error fetching countries:", err));
+  }, []);
+
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleCountryChange = async (e) => {
+    const country = e.target.value;
+    setAddress((prev) => ({ ...prev, country, state: "", city: "" }));
+    setStates([]);
+    setCities([]);
+
+    try {
+      const res = await fetch(
+        "https://countriesnow.space/api/v0.1/countries/states",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ country }),
+        }
+      );
+      const json = await res.json();
+      const list = (json?.data?.states || []).map((s) => s.name || s);
+      setStates(list);
+    } catch (err) {
+      console.error("Failed to fetch states:", err);
+    }
+  };
+
+  const handleStateChange = async (e) => {
+    const state = e.target.value;
+    setAddress((prev) => ({ ...prev, state, city: "" }));
+    setCities([]);
+
+    try {
+      const res = await fetch(
+        "https://countriesnow.space/api/v0.1/countries/state/cities",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ country: address.country, state }),
+        }
+      );
+      const json = await res.json();
+      const list = json?.data || [];
+      setCities(list);
+    } catch (err) {
+      console.error("Failed to fetch cities:", err);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const userId = localStorage.getItem("userId");
+
+    // combine main form and address
+    const payload = {
+      ...formData,
+      address,
+    };
 
     try {
       const res = await fetch(
@@ -35,15 +109,17 @@ export default function LandlordOnboarding() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         }
       );
 
       if (res.ok) {
-        // Mark onboarding complete
+        // mark onboarding complete
         await fetch(
           `http://localhost:5000/api/users/${userId}/complete-onboarding`,
-          { method: "PATCH" }
+          {
+            method: "PATCH",
+          }
         );
 
         alert("Onboarding complete!");
@@ -60,9 +136,8 @@ export default function LandlordOnboarding() {
 
   return (
     <div className="onboarding-container">
-      {/* Sidebar */}
       <div className="sidebar">
-        <h2>Landlord Menu</h2>
+        <h2>Landlord Info</h2>
         <ul>
           <li
             className={activeMenu === "general" ? "active" : ""}
@@ -82,19 +157,18 @@ export default function LandlordOnboarding() {
           >
             Contact Info
           </li>
-          <li
-            >
-                <a href="#LandlordDashboard.jsx">Go to Dashboard</a>
+          <li>
+            <a href="#LandlordDashboard.jsx">Go to Dashboard</a>
           </li>
         </ul>
       </div>
 
-      {/* Main Form */}
       <div className="onboarding-main">
-        <h1>Complete Your Landlord Profile</h1>
-        <form onSubmit={handleSubmit}>
+        <h1>Complete Your Profile</h1>
+        <form className="onboardform" onSubmit={handleSubmit}>
           {activeMenu === "general" && (
             <>
+              <label>First Name</label>
               <input
                 name="firstName"
                 placeholder="First Name"
@@ -102,6 +176,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>Last Name</label>
               <input
                 name="lastName"
                 placeholder="Last Name"
@@ -109,25 +185,104 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>Phone Number</label>
               <input
                 name="phoneNumber"
                 placeholder="Phone Number"
-                value={formData.phoneNumber}
+                value={formData.phoneNumber || ""}
                 onChange={handleChange}
                 required
               />
+
+              <label>Street</label>
               <input
-                name="address"
-                placeholder="Address"
-                value={formData.address}
-                onChange={handleChange}
+                name="street"
+                placeholder="Street"
+                value={address.street}
+                onChange={(e) =>
+                  setAddress({ ...address, street: e.target.value })
+                }
                 required
+              />
+
+              <label>Number</label>
+              <input
+                name="number"
+                placeholder="Number"
+                value={address.number}
+                onChange={(e) =>
+                  setAddress({ ...address, number: e.target.value })
+                }
+                required
+              />
+
+              <label>Country</label>
+              <select
+                name="country"
+                value={address.country}
+                onChange={handleCountryChange}
+                required
+              >
+                <option value="">Select Country</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+
+              <label>State / Province</label>
+              <select
+                name="state"
+                value={address.state}
+                onChange={handleStateChange}
+                disabled={!states.length}
+              >
+                <option value="">
+                  {states.length ? "Select State/Province" : "N/A"}
+                </option>
+                {states.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+
+              <label>City</label>
+              <select
+                name="city"
+                value={address.city}
+                onChange={(e) =>
+                  setAddress({ ...address, city: e.target.value })
+                }
+                disabled={!cities.length}
+              >
+                <option value="">
+                  {cities.length ? "Select City" : "N/A"}
+                </option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+
+              <label>Postal Code</label>
+              <input
+                name="postalCode"
+                placeholder="Postal Code"
+                value={address.postalCode}
+                onChange={(e) =>
+                  setAddress({ ...address, postalCode: e.target.value })
+                }
               />
             </>
           )}
 
           {activeMenu === "banking" && (
             <>
+              <label>Bank Name</label>
               <input
                 name="bankName"
                 placeholder="Bank Name"
@@ -135,6 +290,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>Account name</label>
               <input
                 name="accountName"
                 placeholder="Account name"
@@ -142,6 +299,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>Account Number</label>
               <input
                 name="accountNumber"
                 placeholder="Account Number"
@@ -149,6 +308,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>IBAN</label>
               <input
                 name="internationalNumber"
                 placeholder="International bank account number (IBAN)"
@@ -156,6 +317,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>SWIFT / BIC</label>
               <input
                 name="swiftBic"
                 placeholder="SWIFT, BIC or Routing Number"
@@ -163,6 +326,8 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+
+              <label>Routing Number</label>
               <input
                 name="routingNumber"
                 placeholder="Routing Number"
@@ -175,6 +340,7 @@ export default function LandlordOnboarding() {
 
           {activeMenu === "contact" && (
             <>
+              <label>Email</label>
               <input
                 name="email"
                 placeholder="Email"
@@ -182,6 +348,7 @@ export default function LandlordOnboarding() {
                 onChange={handleChange}
                 required
               />
+              <label>Mobile Phone</label>
               <input
                 name="mobilePhone"
                 placeholder="Mobile Phone"
@@ -192,7 +359,9 @@ export default function LandlordOnboarding() {
             </>
           )}
 
-          <button type="submit">Save & Continue</button>
+          <button className="submit-button" type="submit">
+            Save & Continue
+          </button>
         </form>
       </div>
     </div>

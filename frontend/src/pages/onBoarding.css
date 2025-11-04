@@ -49,11 +49,12 @@
 .onboarding-main {
   flex: 1;
   padding: 2rem;
-  background-color: #fff;
+  background-color: #e2e0e0;
 }
 
 .onboarding-main h1 {
-  margin-top: 0;
+  margin-top: 2rem;
+  color: #000;
 }
 
 form {
@@ -61,6 +62,19 @@ form {
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.onboardform {
+background-color: #8f8d8d;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 4px solid #6e7071;
+}
+.address-section label,
+.onboardform label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
 }
 
 input {
@@ -75,16 +89,22 @@ button {
   padding: 0.8rem;
   border: none;
   border-radius: 6px;
-  background-color: #007bff;
+  background-color: #12375e;
   color: white;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #07386d;
 }
 .filters input[type="checkbox"] {
   width: 16px;
   height: 16px;
   cursor: pointer;
+}
+.submit-button {
+  margin-top: 1.5rem;
+  width: 50%;
+ 
+  
 }
