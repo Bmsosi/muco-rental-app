@@ -9,6 +9,7 @@ import propertyRoutes from "./routes/properties.js";
 import messageRoutes from "./routes/messages.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import landlordRoutes from "./routes/landlordRoutes.js";
+import renterInsuranceRoutes from "./routes/renterInsurance.js";
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/properties", propertyRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/landlord", landlordRoutes); //This is landlord routes for onboarding
+app.use("/api/renter-insurance", renterInsuranceRoutes); // Renter Insurance PDF generation
 
 // Server Start
 const PORT = process.env.PORT || 5000;
