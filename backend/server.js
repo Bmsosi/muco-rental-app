@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/auth.js";
 import propertyRoutes from "./routes/properties.js";
 import messageRoutes from "./routes/messages.js";
@@ -30,6 +30,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/landlord", landlordRoutes); //This is landlord routes for onboarding
 app.use("/api/renter-insurance", renterInsuranceRoutes); // Renter Insurance PDF generation
+app.use("/api/users", userRoutes);
 
 // Server Start
 const PORT = process.env.PORT || 5000;

@@ -1,10 +1,12 @@
-import { Router } from "express";
-import { saveLandlordOnboarding } from "../controllers/landlordController.js";
-import { authenticate } from "../middleware/AuthMiddleware.js";
+import express from "express";
+import {
+  updateOnboarding,
+  completeOnboarding,
+} from "../controllers/landlordController.js";
 
-const router = Router();
+const router = express.Router();
 
-// POST /api/landlord/onboarding/:userId
-router.post("/onboarding/:userId", authenticate, saveLandlordOnboarding);
+router.post("/onboarding/:userId", updateOnboarding);
+router.patch("/users/:userId/complete-onboarding", completeOnboarding);
 
 export default router;

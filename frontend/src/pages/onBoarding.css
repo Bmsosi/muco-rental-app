@@ -7,7 +7,7 @@
 
 .sidebar  {
   width: 220px;
-  background-color: #0c2b20;
+  background-color: #06082f;
   color: white;
   padding: 2rem 1rem;
 }
@@ -55,6 +55,7 @@
 .onboarding-main h1 {
   margin-top: 2rem;
   color: #000;
+  text-align: center;
 }
 
 form {
@@ -65,16 +66,22 @@ form {
 }
 
 .onboardform {
-background-color: #8f8d8d;
+  background-color: #a6a2a2;
   padding: 2rem;
   border-radius: 8px;
   border: 4px solid #6e7071;
+  width: 80%;
+  max-width: 900px;
+  box-sizing: border-box;
+  margin: 3rem auto; /* centers horizontally and adds vertical spacing */
 }
 .address-section label,
 .onboardform label {
   display: block;
   margin-top: 10px;
   font-weight: 600;
+  font-size: 2rem;
+  color: #fff;
 }
 
 input {
@@ -82,10 +89,11 @@ input {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  
 }
 
 button {
-  width: 150px;
+  width: 100%;
   padding: 0.8rem;
   border: none;
   border-radius: 6px;
@@ -95,7 +103,7 @@ button {
 }
 
 button:hover {
-  background-color: #07386d;
+  background-color: #05153b;
 }
 .filters input[type="checkbox"] {
   width: 16px;
@@ -104,7 +112,7 @@ button:hover {
 }
 .submit-button {
   margin-top: 1.5rem;
-  width: 50%;
+  width: 100%;
  
   
 }

@@ -1,43 +1,41 @@
 import prisma from "../utils/prisma.js";
 
-export const saveLandlordOnboarding = async (req, res) => {
+export const updateOnboarding = async (req, res) => {
   const { userId } = req.params;
-  const {
-    bankName,
-    accountName,
-    accountNumber,
-    routingNumber,
-    internationalNumber,
-    swiftBic,
-    phoneNumber,
-    email,
-    address,
-  } = req.body;
+  const data = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: Number(userId) },
-    });
-
-    if (!user || user.role !== "LANDLORD") {
-      return res.status(403).json({ error: "Unauthorized or invalid user." });
-    }
-
     await prisma.user.update({
       where: { id: Number(userId) },
       data: {
-        bankName,
-        accountNumber,
-        routingNumber,
-        phone: phoneNumber,
-        address,
-        onboarded: true,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phoneNumber,
+        email: data.email,
+        bankName: data.bankName,
+        accountNumber: data.accountNumber,
+        routingNumber: data.routingNumber,
+        address: JSON.stringify(data.address), // if not separate fields
       },
     });
 
-    res.json({ message: "Onboarding info saved successfully" });
-  } catch (error) {
-    console.error("Error saving onboarding:", error);
-    res.status(500).json({ error: "Failed to save onboarding data." });
+    res.json({ message: "Onboarding info saved" });
+  } catch (err) {
+    console.error("Error saving onboarding:", err);
+    res.status(500).json({ error: "Failed to save onboarding data" });
+  }
+};
+
+export const completeOnboarding = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await prisma.user.update({
+      where: { id: Number(userId) },
+      data: { onboarded: true },
+    });
+    res.json({ message: "Onboarding completed" });
+  } catch (err) {
+    console.error("Error completing onboarding:", err);
+    res.status(500).json({ error: "Failed to complete onboarding" });
   }
 };

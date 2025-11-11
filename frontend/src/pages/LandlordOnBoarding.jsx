@@ -96,40 +96,32 @@ export default function LandlordOnboarding() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = localStorage.getItem("userId");
-
-    // combine main form and address
-    const payload = {
-      ...formData,
-      address,
-    };
+    const payload = { ...formData, address };
 
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/landlord/onboarding/${userId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      // Save progress to backend
+      await fetch(`http://localhost:5000/api/landlord/onboarding/${userId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-      if (res.ok) {
-        // mark onboarding complete
+      // Move to next section
+      if (activeMenu === "general") {
+        setActiveMenu("banking");
+      } else if (activeMenu === "banking") {
+        setActiveMenu("contact");
+      } else if (activeMenu === "contact") {
+        // Complete onboarding when last step done
         await fetch(
           `http://localhost:5000/api/users/${userId}/complete-onboarding`,
-          {
-            method: "PATCH",
-          }
+          { method: "PATCH" }
         );
-
         alert("Onboarding complete!");
-        navigate("/landlord/dashboard");
-      } else {
-        const data = await res.json();
-        alert(data.error || "Failed to save info.");
+        navigate("/landlord/details");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error during onboarding:", err);
       alert("Server error.");
     }
   };
